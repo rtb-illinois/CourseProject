@@ -1,3 +1,8 @@
-# CourseProject
+# CS 410 Course Project
+## Ryan Baker (NetId: rtb2-
+## rtb2@illinois.edu
 
-Please fork this repository and paste the github link of your fork on Microsoft CMT. Detailed instructions are on Coursera under Week 1: Course Project Overview/Week 9 Activities.
+This repo is the final project for Ryan Baker for CS 410, Fall 2021 at the University of Illinois at Urbana-Champaign.
+
+The repo currently includes:
+- Project Proposal (proposal.pdf)
