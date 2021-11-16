@@ -6,3 +6,5 @@ This repo is the final project for Ryan Baker for CS 410, Fall 2021 at the Unive
 
 The repo currently includes:
 - Project Proposal (proposal.pdf)
+- Project Progress Report (progress.pdf)
+- `utils` Directory (code for scraping cards from the Blizzard Hearthstone API and building a raw DB of all cards using SQLite3)
