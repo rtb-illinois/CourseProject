@@ -31,6 +31,8 @@ def main(config_file: str, query_term: str):
     query.content(query_term)
     top_docs = ranker.score(idx, query, num_results=3)
 
+    import pdb; pdb.set_trace()
+
     with open(config_file) as f:
         config = pytoml.load(f)
 

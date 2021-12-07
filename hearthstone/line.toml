@@ -1,2 +1,6 @@
 type = "line-corpus"
-store-full-text = true
+metadata = [{name = "body", type = "string"},
+            {name = "id", type = "uint"},
+            {name = "slug", type = "string"},
+            {name = "name", type = "string"},
+            {name = "image", type = "string"}]

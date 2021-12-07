@@ -39,15 +39,20 @@ def main(db_file: str, oauth_client_id: str, oauth_client_secret: str,
 
     create_table_statement = ('CREATE TABLE IF NOT EXISTS cards (id INT '
                               'PRIMARY KEY, slug TEXT, name TEXT, body TEXT, '
-                              'hidden TEXT)')
+                              'hidden TEXT, image TEXT, class TEXT, '
+                              'spellschool TEXT, miniontype TEXT)')
     cursor.execute(create_table_statement)
 
-    insert_statement = ('INSERT INTO cards VALUES (?,?,?,?,?) ON CONFLICT(id) '
+    insert_statement = ('INSERT INTO cards VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(id) '
                         'DO UPDATE SET slug=excluded.slug, name=excluded.name, '
-                        'body=excluded.body, hidden=excluded.hidden')
+                        'body=excluded.body, hidden=excluded.hidden, '
+                        'image=excluded.image, class=excluded.class, '
+                        'spellschool=excluded.spellschool, '
+                        'miniontype=excluded.miniontype')
     for card in cards:
         card_row_info = (card['id'], card['slug'], card['name'], card['text'],
-                         card['flavorText'])
+                         card['flavorText'], card['image'], card['class'],
+                         card['spellschool'], card['miniontype'])
         cursor.execute(insert_statement, card_row_info)
 
     db.commit()

@@ -45,11 +45,25 @@ def main(oauth_client_id: str, oauth_client_secret: str):
         page_json = json.loads(page_response.text)
         hearthstone_cards += page_json['cards']
 
+    metadata_uri = 'https://us.api.blizzard.com/hearthstone/metadata'
+    metadata_params = {'locale': 'en_US'}
+    metadata_response = requests.get(metadata_uri, headers=headers,
+                                     params=metadata_params)
+    metadata_json = json.loads(metadata_response.text)
+    classes = {classs['id']: classs['name'] for classs in metadata_json['classes']}
+    spell_schools = {school['id']: school['name'] for school in metadata_json['spellSchools']}
+    minion_types = {mtype['id']: mtype['name'] for mtype in metadata_json['minionTypes']}
+
+    for card in hearthstone_cards:
+        card['class'] = classes.get(card.get('classId', ''), '')
+        card['spellschool'] = spell_schools.get(card.get('spellSchoolId', ''), '')
+        card['miniontype'] = minion_types.get(card.get('minionTypeId', ''), '')
+
     return hearthstone_cards
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('oauth-client-id', required=True)
-    parser.add_argument('oauth-client-secret', required=True)
+    parser.add_argument('--oauth-client-id', required=True)
+    parser.add_argument('--oauth-client-secret', required=True)
     args = parser.parse_args()
-    main(args.oauth_client_id, args.oath_client_secret)
+    main(args.oauth_client_id, args.oauth_client_secret)

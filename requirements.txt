@@ -1,4 +1,8 @@
 beautifulsoup4
+flask
+flask-restx
+gunicorn
 lxml
 metapy
 pytoml
+requests
