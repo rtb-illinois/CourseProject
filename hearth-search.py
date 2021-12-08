@@ -1,13 +1,16 @@
 import argparse
 import os
 
-from flask import Flask, g
-from flask_restx import Api, Resource
+from flask import Flask, g, request
+from flask_restx import Api, Resource, reqparse
 import metapy
 import pytoml
 
 app = Flask(__name__)
 api = Api(app)
+
+parser = reqparse.RequestParser()
+parser.add_argument("num_docs", type=int, default=3)
 
 
 def get_search_engine():
@@ -34,13 +37,15 @@ def format_card_results(top_cards, idx):
 
 @api.route('/search/<string:query_term>')
 class Search(Resource):
+
+    @api.expect(parser)
     def get(self, query_term):
         query = metapy.index.Document()
         query.content(query_term)
         search_engine = get_search_engine()
         ranker = search_engine['ranker']
         idx = search_engine['idx']
-        top_docs = ranker.score(idx, query, num_results=3)
+        top_docs = ranker.score(idx, query, num_results=parser.parse_args()['num_docs'])
         formatted_results = format_card_results(top_docs, idx)
         return formatted_results
 

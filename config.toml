@@ -1,4 +1,5 @@
 prefix = "."
+stop-words = "stopwords.txt"
 
 dataset = "hearthstone"
 corpus = "line.toml"
