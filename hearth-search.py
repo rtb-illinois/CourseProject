@@ -1,3 +1,7 @@
+'''
+This module contains a simple flask app for search the hearthstone cards using
+a metapy based information retrieval method
+'''
 import argparse
 import os
 
@@ -14,6 +18,21 @@ parser.add_argument("num_docs", type=int, default=3)
 
 
 def get_search_engine():
+    '''
+    This function fetches a "search engine" that is represented as a dictionary
+    with a metapy index and a metapy ranker. The function uses the flask app
+    context so that the ranker and index do not need to be rebuilt for
+    subsequent requests
+
+    Params
+    -------
+    - None
+
+    Returns
+    -------
+    - search_engine: dict
+        The metapy ranker and metapy index to be used for searching
+    '''
     if 'search_engine' not in g:
         idx = metapy.index.make_inverted_index(os.environ['METAPY_CONFIG'])
         ranker = metapy.index.OkapiBM25()
@@ -22,6 +41,23 @@ def get_search_engine():
 
 
 def format_card_results(top_cards, idx):
+    '''
+    This functions formats the search results by utilizing the metapy index
+    metadata associated with each document in the metapy index, returning a
+    human readable result.
+
+    Params
+    -------
+    - top_cards: list[tuple]
+        A list of tuples of the top document results
+    - idx: metapy.Index
+        A metapy inverted index
+
+    Returns
+    -------
+    - results: dict
+        The formatted top card results
+    '''
     results = {}
     for index, card in enumerate(top_cards):
         doc_id = card[0]
@@ -37,9 +73,26 @@ def format_card_results(top_cards, idx):
 
 @api.route('/search/<string:query_term>')
 class Search(Resource):
+    '''
+    The main search api route for the flask app
+    '''
 
     @api.expect(parser)
     def get(self, query_term):
+        '''
+        This function is the main get method for the search api route.
+
+        Params
+        -------
+        - query_term: str
+            A query term to search with
+
+        Returns
+        -------
+        - formatted_results: dict
+            The formatted top card results, organized by their ranking returned
+            by the search
+        '''
         query = metapy.index.Document()
         query.content(query_term)
         search_engine = get_search_engine()
