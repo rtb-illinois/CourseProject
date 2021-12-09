@@ -5,8 +5,9 @@ Author: Ryan Baker (NetId: rtb2) [rtb2@illinois.edu](rtb2@illinois.edu)
 
 This repo is the final project for Ryan Baker for CS 410, Fall 2021 at the University of Illinois at Urbana-Champaign.
 
-*Note for reviewers:* All documentation and reports for this project are found in the `docs` directory within this repo. This includes the
-project proposal, progress report, and final project documentation.
+*Note for reviewers:* All documentation and reports for this project are found in the `docs` directory within this repo.
+This includes the project proposal, progress report, and final project documentation. The video presentation for this
+project is found in Google Drive [https://drive.google.com/file/d/1Jlni-JIrMF4HDFTeel2LEOAlK_5lVUvy/view?usp=sharing](https://drive.google.com/file/d/1Jlni-JIrMF4HDFTeel2LEOAlK_5lVUvy/view?usp=sharing).
 
 ## Overview
 The purpose of this project is to provide a search engine for [Hearthstone](https://playhearthstone.com/en-us) cards
@@ -218,7 +219,7 @@ button. This will send a request to the application and return the result. See f
 
 #### Browser
 Once the application is running, a user can send requests to the application directly via the browser, by pasting a URL
-such as the following into the browser: [](http://localhost:6999/search?query_term=reduce%20cost%20of%20spell&num_docs=3)
+such as the following into the browser: [http://localhost:6999/search?query_term=reduce%20cost%20of%20spell&num_docs=3](http://localhost:6999/search?query_term=reduce%20cost%20of%20spell&num_docs=3)
 The query part of the URL may be replaced by any query term and number of documents, but keep in mind that it must be
 properly URL encoded. This can be accomplished using a URL encoder online, such as [this one](https://www.urlencoder.org/).
 See figure 4 for screenshot example.
