@@ -14,6 +14,7 @@ app = Flask(__name__)
 api = Api(app)
 
 parser = reqparse.RequestParser()
+parser.add_argument("query_term", type=str, required=True)
 parser.add_argument("num_docs", type=int, default=3)
 
 
@@ -71,21 +72,20 @@ def format_card_results(top_cards, idx):
     return results
 
 
-@api.route('/search/<string:query_term>')
+@api.route('/search')
 class Search(Resource):
     '''
     The main search api route for the flask app
     '''
 
     @api.expect(parser)
-    def get(self, query_term):
+    def get(self):
         '''
         This function is the main get method for the search api route.
 
         Params
         -------
-        - query_term: str
-            A query term to search with
+        - None
 
         Returns
         -------
@@ -93,12 +93,13 @@ class Search(Resource):
             The formatted top card results, organized by their ranking returned
             by the search
         '''
+        args = parser.parse_args()
         query = metapy.index.Document()
-        query.content(query_term)
+        query.content(args['query_term'])
         search_engine = get_search_engine()
         ranker = search_engine['ranker']
         idx = search_engine['idx']
-        top_docs = ranker.score(idx, query, num_results=parser.parse_args()['num_docs'])
+        top_docs = ranker.score(idx, query, num_results=args['num_docs'])
         formatted_results = format_card_results(top_docs, idx)
         return formatted_results
 
