@@ -52,7 +52,8 @@ consumption. The script `utils/create_card_db.py` creates a new DB or connects t
 can be run as follows:
 
 ```
-python -m utils.create_card_db --oauth-client-id <id> --oauth-client-secret <secret> --db-file cards.db
+python -m utils.create_card_db --oauth-client-id <id> --oauth-client-secret <secret>
+  --db-file cards.db
 ```
 with an optional flag of `--existing-db` if the DB file already exists.
 
@@ -106,6 +107,43 @@ METAPY_CONFIG=config.toml gunicorn hearth-search:app
 ```
 A `gunicorn.conf.py` file is provided to supply gunicorn configuration. This will serve the app at
 `http://127.0.0.1:6999` (see Usage instructions below for more details).
+
+### Evaluation
+An evaluation of this project was conducted using user relevance judgements. Two different hearthstone
+players performed a series of queries against this application and then recorded relevance judgements for each result
+returned by the search engine. This was completed using the script `evaluation.py`. It can be run as follows:
+
+```
+python evaluation.py --config-file config.toml --num-queries 10 --num-docs 10
+  --output-file relevance.json
+```
+where the user can specify the metapy config file, number of queries, the number of search results, and the output file.
+This creates an output file that contains each query, the results returned, and a relevance judgement from the user for
+each result.
+
+These relevance judgements are then fed into another script, `evaluation-summary.py` that computes the average precision
+for each query. This script can be executed as follows:
+
+```
+python evaluation-summary.py --relevance-file relevance.json
+```
+This will then print out the average precision for each query.
+
+The actual relevance judgements for this evaluation are stored in the `relevance/` directory in this repo. The average
+precision results are displayed below.
+
+|          | User 1 | User 2 |
+|----------|--------|--------|
+| Query 1  | 0.608  | 1.0    |
+| Query 2  | 1.0    | 0.9    |
+| Query 3  | 1.0    | 1.0    |
+| Query 4  | 1.0    | 1.0    |
+| Query 5  | 0.639  | 1.0    |
+| Query 6  | 0.9    | 0.556  |
+| Query 7  | 1.0    | 1.0    |
+| Query 8  | 0.707  | 1.0    |
+| Query 9  | 1.0    | 1.0    |
+| Query 10 | 0.745  | 1.0    |
 
 ### Possible Extensions
 There a number of immediate improvements that could be made to this application. These are described below.
